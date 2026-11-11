@@ -1,0 +1,28 @@
+# Secrets: never commit environment files
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Build output (Next.js / Vercel)
+.next/
+out/
+build/
+.vercel/
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+*.swp
+
+# TypeScript build info
+*.tsbuildinfo
+next-env.d.ts
