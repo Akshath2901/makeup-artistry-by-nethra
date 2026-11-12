@@ -1,26 +1,707 @@
 @import "tailwindcss";
 
+/*
+ * Design system for Direction A, "The Quiet Portrait".
+ * Every value below comes from docs/phase-2-design-direction.md
+ * (colour, type, spacing, grid) or the motion decision in
+ * docs/mobile-first-requirements.md. Do not add ad-hoc values.
+ *
+ * Mobile-first: unprefixed rules are the phone styles. Wider screens
+ * are added with min-width media queries (sm 640, md 768, lg 1024, xl 1440).
+ */
+
+@theme {
+  /* Colour tokens. Tailwind's default palette is removed on purpose. */
+  --color-*: initial;
+  --color-paper: #f6f1e9; /* color.bg — page background */
+  --color-surface: #ede5d8; /* quiet bands, form fields */
+  --color-ink: #1f1b18; /* headings and body text */
+  --color-muted: #5e554d; /* captions, secondary text, form borders */
+  --color-rule: #d6cbbc; /* dividers and image placeholders only */
+  --color-accent: #7a3e2f; /* primary action, focus ring, active filter */
+  --color-accent-strong: #66321f; /* accent hover and pressed */
+  --color-on-accent: #f6f1e9; /* text on the accent */
+
+  /* Font families (set by next/font in layout.tsx). */
+  --font-*: initial;
+  --font-serif: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-schibsted), "Helvetica Neue", Arial, sans-serif;
+
+  /* Breakpoints: tablet 640, wide tablet 768, desktop 1024, wide 1440. */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 90rem;
+
+  /* Content is capped at 1320 px on wide screens. */
+  --container-content: 82.5rem;
+  --container-prose: 40rem; /* about 65 characters of body text */
+
+  --radius-button: 2px;
+
+  /* Motion tokens: one easing family and one duration set for the whole site. */
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-curtain: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-quick: 200ms;
+  --duration-base: 400ms;
+  --duration-slow: 600ms;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Page side margins: 20 px phones, 32 px tablets, 64 px desktop. */
+  --page-margin: 1.25rem;
+  /* Space between major sections: 96 px phones, 128 px desktop. */
+  --section-space: 6rem;
+  /* Header height. */
+  --header-height: 4rem;
+  /* Reveal distance is smaller on phones. */
+  --reveal-distance: 0.75rem;
+
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (width >= 40rem) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --page-margin: 2rem;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (width >= 64rem) {
+  :root {
+    --page-margin: 4rem;
+    --section-space: 8rem;
+    --header-height: 5rem;
+    --reveal-distance: 1.25rem;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  html {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--header-height) + 1rem);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: clamp(1.0625rem, 1.0351rem + 0.1124vw, 1.125rem);
+    line-height: 1.6;
+    font-kerning: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-wrap: break-word;
+  }
+
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  /* Accent focus ring everywhere; buttons switch to an ink ring below. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  /* Lock page scroll while the full-screen mobile menu is open. */
+  html:has(.menu-dialog[open]) {
+    overflow: hidden;
+  }
+
+  /* Smooth in-page scrolling only when motion is welcome. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Type scale (Phase 2). Exact at 390 px and 1280 px, fluid between.   */
+/* ------------------------------------------------------------------ */
+
+@utility text-display {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(2.5rem, 1.6236rem + 3.5955vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+@utility text-h1 {
+  font-family: var(--font-serif);
+  font-weight: 350;
+  font-size: clamp(2.125rem, 1.632rem + 2.0225vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+@utility text-h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1.6875rem, 1.3862rem + 1.236vw, 2.375rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+@utility text-h3 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(1.3125rem, 1.1756rem + 0.5618vw, 1.625rem);
+  line-height: 1.25;
+}
+
+@utility text-lead {
+  font-family: var(--font-sans);
+  font-size: clamp(1.1875rem, 1.1327rem + 0.2247vw, 1.3125rem);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+@utility text-body {
+  font-family: var(--font-sans);
+  font-size: clamp(1.0625rem, 1.0351rem + 0.1124vw, 1.125rem);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+@utility text-caption {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+@utility text-label {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(0.875rem, 0.8476rem + 0.1124vw, 0.9375rem);
+  line-height: 1.2;
+}
+
+/* Wordmark placeholder: serif at the lead size, until a logo exists. */
+@utility text-wordmark {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1.1875rem, 1.1327rem + 0.2247vw, 1.3125rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ */
+/* Layout foundations                                                   */
+/* ------------------------------------------------------------------ */
+
+/* Centred content column with the responsive page margins. */
+@utility page-container {
+  width: 100%;
+  max-width: calc(var(--container-content) + 2 * var(--page-margin));
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
+}
+
+/* 4 columns (16 px gutter) → 8 columns (24 px) → 12 columns (24 px). */
+@utility page-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 1rem;
+
+  @media (width >= 40rem) {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    column-gap: 1.5rem;
+  }
+
+  @media (width >= 64rem) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}
+
+@utility section-space {
+  padding-block: var(--section-space);
+}
+
+/* ------------------------------------------------------------------ */
+/* Buttons and links (Phase 2 "Buttons and links")                     */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  /* The one filled button per screen. 52 px tall, 2 px corners. */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    min-height: 3.25rem;
+    padding-inline: 1.5rem;
+    border-radius: var(--radius-button);
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    line-height: 1.2;
+    text-decoration: none;
+    transition:
+      background-color var(--duration-quick) var(--ease-editorial),
+      transform var(--duration-quick) var(--ease-editorial);
+  }
+
+  .btn-primary:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  .btn-primary:active {
+    background-color: var(--color-accent-strong);
+    transform: translateY(1px);
+  }
+
+  @media (hover: hover) {
+    .btn-primary:hover {
+      background-color: var(--color-accent-strong);
+    }
+  }
+
+  /* Text link: ink with a 1 px underline that thickens on hover. */
+  .link-text {
+    color: var(--color-ink);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    transition:
+      text-decoration-thickness var(--duration-quick) var(--ease-editorial),
+      text-underline-offset var(--duration-quick) var(--ease-editorial);
+  }
+
+  @media (hover: hover) {
+    .link-text:hover {
+      text-decoration-thickness: 2px;
+      text-underline-offset: 0.28em;
+    }
+  }
+
+  /* Navigation link: underline draws in from the left on hover; the
+     current page keeps a full underline so state never depends on hover. */
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0.625rem;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--duration-base) var(--ease-editorial);
+  }
+
+  .nav-link[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
+
+  @media (hover: hover) {
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+  }
+
+  /* Visible placeholder text, so missing client content is never mistaken
+     for final copy. Search the code for "[TBD" or "[CLIENT PHOTO". */
+  .placeholder-text {
+    color: var(--color-muted);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion foundations (docs/mobile-first-requirements.md, "Motion       */
+/* decision"). Only opacity, transform and clip-path are animated.      */
+/* Content is visible by default; reduced motion turns movement off.    */
+/* ------------------------------------------------------------------ */
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--reveal-distance));
+  }
+}
+
+/* Typography reveal: the line rises out of a mask. Negative insets at the
+   end keep accents and descenders from being clipped. */
+@keyframes text-in {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0.4em);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(-0.3em -0.1em -0.4em -0.1em);
+    transform: none;
+  }
+}
+
+/* Image reveal: a curtain lifts from the bottom edge. */
+@keyframes image-in {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes image-settle {
+  from {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 1. Entrance animations: CSS-only, run once when an element first
+        renders (page load or arriving on a new page). Use for content
+        near the top of a page. Stagger with style={{ "--delay": "120ms" }}. */
+  .enter-rise {
+    animation: rise-in var(--duration-slow) var(--ease-editorial) var(--delay, 0ms) backwards;
+  }
+
+  .enter-text {
+    animation: text-in 700ms var(--ease-editorial) var(--delay, 0ms) backwards;
+  }
+
+  .enter-image {
+    animation: image-in 900ms var(--ease-curtain) var(--delay, 0ms) backwards;
+  }
+
+  .enter-image > * {
+    animation: image-settle 1200ms var(--ease-editorial) var(--delay, 0ms) backwards;
+  }
+
+  /* 2. Scroll-triggered reveals: add data-reveal="rise" | "text" | "image".
+        RevealObserver adds .js-reveal to <html> and marks elements with
+        data-revealed as they enter the screen. Without JavaScript,
+        nothing is hidden. Elements already on screen at load are shown
+        immediately (data-revealed="instant") to avoid a flash. */
+  .js-reveal [data-reveal]:not([data-revealed]) {
+    opacity: 0;
+  }
+
+  .js-reveal [data-reveal="image"]:not([data-revealed]) {
+    opacity: 1;
+    clip-path: inset(100% 0 0 0);
+  }
+
+  [data-reveal="rise"][data-revealed="animate"] {
+    animation: rise-in var(--duration-slow) var(--ease-editorial) var(--delay, 0ms) backwards;
+  }
+
+  [data-reveal="text"][data-revealed="animate"] {
+    animation: text-in 700ms var(--ease-editorial) var(--delay, 0ms) backwards;
+  }
+
+  [data-reveal="image"][data-revealed="animate"] {
+    animation: image-in 900ms var(--ease-curtain) var(--delay, 0ms) backwards;
+  }
+
+  [data-reveal="image"][data-revealed="animate"] > * {
+    animation: image-settle 1200ms var(--ease-editorial) var(--delay, 0ms) backwards;
+  }
+}
+
+/* Hero portrait on phones: full width at 4:5, but never taller than 54%
+   of the screen, so the name and enquiry action reach the first screen.
+   Real photos crop with object-fit and their focus point. */
+@media (width < 40rem) {
+  .hero-photo > * {
+    aspect-ratio: auto;
+    width: 100%;
+    height: min(125vw, 54svh); /* 4:5 of the screen width, capped */
+  }
+}
+
+/* Fine lines: 1 px rules that draw in from the left (or from the top for
+   .fine-line-y). Decorative only, so they are aria-hidden in markup. */
+@layer components {
+  .fine-line {
+    display: block;
+    height: 1px;
+    background-color: var(--color-rule);
+    transform-origin: left center;
+  }
+
+  .fine-line-y {
+    display: block;
+    width: 1px;
+    background-color: var(--color-rule);
+    transform-origin: center top;
+  }
+}
+
+@keyframes line-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes line-draw-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js-reveal [data-reveal="line"]:not([data-revealed]) {
+    opacity: 1;
+    transform: scaleX(0);
+  }
+
+  .js-reveal [data-reveal="line-y"]:not([data-revealed]) {
+    opacity: 1;
+    transform: scaleY(0);
+  }
+
+  [data-reveal="line"][data-revealed="animate"],
+  .enter-line {
+    animation: line-draw 1100ms var(--ease-curtain) var(--delay, 0ms) backwards;
+  }
+
+  [data-reveal="line-y"][data-revealed="animate"] {
+    animation: line-draw-y 1400ms var(--ease-curtain) var(--delay, 0ms) backwards;
+  }
+}
+
+/* Subtle image response on devices that can hover. Never needed to use
+   the site, and off for reduced motion. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .photo-hover > * {
+    transition: transform 900ms var(--ease-editorial);
+  }
+
+  .photo-hover:hover > * {
+    transform: scale(1.025);
+  }
+}
+
+/* Button feedback: the icon nudges forward on hover. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .btn-primary svg {
+    transition: transform var(--duration-base) var(--ease-editorial);
+  }
+
+  .btn-primary:hover svg {
+    transform: translateX(2px) rotate(-6deg);
+  }
+}
+
+/* Phones: shorter image reveals so content arrives quickly. */
+@media (prefers-reduced-motion: no-preference) and (width < 40rem) {
+  .enter-image,
+  [data-reveal="image"][data-revealed="animate"] {
+    animation-duration: 700ms;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Header: gains a rule and a slightly smaller wordmark after scrolling */
+/* (CSS scroll-driven animation; browsers without support show the     */
+/* rule all the time).                                                  */
+/* ------------------------------------------------------------------ */
+
+.site-header {
+  box-shadow: inset 0 -1px 0 var(--color-rule);
+  view-transition-name: site-header;
+}
+
+@keyframes header-settle {
+  from {
+    box-shadow: inset 0 -1px 0 transparent;
+  }
+}
+
+@keyframes wordmark-settle {
+  to {
+    transform: scale(0.92);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .site-header {
+    animation: header-settle linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 6rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) and (width >= 48rem) {
+    .site-header .wordmark {
+      transform-origin: left center;
+      animation: wordmark-settle linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 6rem;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Mobile menu: a full-screen <dialog>. The curtain opens from the top, */
+/* links rise in one after another, and it closes by lifting away.     */
+/* ------------------------------------------------------------------ */
+
+.menu-dialog {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.menu-dialog::backdrop {
+  background-color: transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .menu-dialog {
+    clip-path: inset(0 0 100% 0);
+    transition:
+      clip-path 500ms var(--ease-curtain),
+      overlay 500ms allow-discrete,
+      display 500ms allow-discrete;
+  }
+
+  .menu-dialog[open] {
+    clip-path: inset(0 0 0 0);
+  }
+
+  @starting-style {
+    .menu-dialog[open] {
+      clip-path: inset(0 0 100% 0);
+    }
+  }
+
+  .menu-dialog[open] .menu-item {
+    animation: text-in 600ms var(--ease-editorial) backwards;
+    animation-delay: calc(160ms + var(--i, 0) * 70ms);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Mobile enquiry bar (Phase 2): a slim bar with one action. It slides  */
+/* up after the opening, and away near the closing enquiry and footer.  */
+/* Fixed and transform-only, so it never shifts the layout.             */
+/* ------------------------------------------------------------------ */
+
+.enquiry-bar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 30;
+  padding: 0.625rem var(--page-margin) max(0.625rem, env(safe-area-inset-bottom));
+  background-color: var(--color-paper);
+  box-shadow: inset 0 1px 0 var(--color-rule);
+  transform: translateY(calc(100% + 1px));
+  transition:
+    transform var(--duration-slow) var(--ease-editorial),
+    visibility 0s linear var(--duration-slow);
+  visibility: hidden;
+}
+
+.enquiry-bar[data-visible="true"] {
+  transform: none;
+  visibility: visible;
+  transition:
+    transform var(--duration-slow) var(--ease-editorial),
+    visibility 0s;
+}
+
+@media (width >= 48rem) {
+  .enquiry-bar {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Page transitions (React <ViewTransition>, see PageTransition.tsx).   */
+/* The old page leaves quickly; the new one arrives gently. The header  */
+/* stays still as an anchor. Browsers without support just navigate.   */
+/* ------------------------------------------------------------------ */
+
+::view-transition-old(.page-exit) {
+  animation: 160ms var(--ease-editorial) both fade-in reverse;
+}
+
+::view-transition-new(.page-enter) {
+  animation:
+    320ms var(--ease-editorial) 120ms both fade-in,
+    500ms var(--ease-editorial) both page-rise;
+}
+
+@keyframes page-rise {
+  from {
+    transform: translateY(var(--reveal-distance));
+  }
+}
+
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(site-header) {
+  display: none;
+}
+
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion: no movement anywhere. Content shows immediately.     */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

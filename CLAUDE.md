@@ -15,6 +15,7 @@ Read these before planning or writing code:
 3. `docs/briefs/claude-code-handoff.md` — how we work in Claude Code.
 4. `docs/briefs/phase-1-brief.md` and `docs/briefs/phase-2-brief.md` — original briefs.
 5. `AGENTS.md` — Next.js 16 notes: read the matching guide in `node_modules/next/dist/docs/` before writing Next.js code.
+6. `docs/mobile-first-requirements.md` — **non-negotiable for every stage.** Design and build each component for phones first, then enhance for tablet and desktop. Test at 320, 360, 375, 390, 414, 430, 768, 820, 1024, 1280, 1440 and 1920 px, and report exactly which widths were tested.
 
 Where Phase 2 marks a decision as resolved, it overrides Phase 1.
 
@@ -71,7 +72,8 @@ Never claim something works, a test passed or a deploy succeeded unless it was a
 
 - Use the design tokens, type scale, spacing, breakpoints and aspect ratios from the Phase 2 doc. No ad-hoc colours, sizes or fonts.
 - One primary action per screen. WhatsApp is the primary enquiry path.
-- No carousels, decorative statistics, floating widgets, gradients or decorative animation.
+- No carousels, decorative statistics, floating widgets or gradients.
+- Motion: richer but restrained, CSS-first (approved 2026-11-13). Follow "Motion decision" in `docs/mobile-first-requirements.md`: typography reveals, image mask reveals, light scroll reveals, mobile menu and page transitions where practical. No heavy animation libraries, WebGL, 3D, looping motion, parallax or scroll-jacking. Respect reduced motion; all content works without animation. Mobile performance beats visual effects.
 - Accessibility target: WCAG 2.2 AA. Respect reduced-motion settings. Nothing essential depends on hover.
 
 ## Communication

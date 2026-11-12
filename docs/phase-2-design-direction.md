@@ -200,9 +200,20 @@ Trade-off to approve: Velora loses a record of enquiries, because they live only
 
 ### Motion
 
-- Images fade in once (under 300 ms) as they enter the screen, to soften loading. Nothing loops or moves continuously.
-- The full-screen viewer opens with a short scale-from-thumbnail transition so visitors keep their place.
-- Reduced-motion settings turn all of this off. No parallax, scroll hijacking or cursor effects.
+> **Updated and approved by the project owner on 2026-11-13:** a richer but restrained motion experience, built CSS-first. The full rules are under "Motion decision" in `docs/mobile-first-requirements.md`; this summary must stay consistent with them.
+
+Motion should feel like turning the pages of a printed editorial: quiet, precise, and always secondary to the photographs. Mobile performance takes priority over visual effects.
+
+- **Typography reveals:** headings reveal elegantly once, on first view.
+- **Image reveals:** images enter with a subtle mask (clip) reveal and fade, once, as they come into view. The mask never covers the face or makeup once the reveal ends.
+- **Scroll-triggered reveals:** lightweight, once per element, and only where they help the reading rhythm, not on every block.
+- **Mobile navigation:** the full-screen menu opens and closes with a smooth, short transition.
+- **Page transitions:** subtle, and only where technically practical without hurting speed or accessibility.
+- **Full-screen viewer:** opens with a short scale-from-thumbnail transition so visitors keep their place.
+- **Never:** heavy animation libraries, WebGL or 3D, continuous or looping motion, parallax, scroll-jacking, cursor effects, or hover-only effects.
+- **Reduced motion:** `prefers-reduced-motion` turns all movement off. All content is fully visible and usable without any animation.
+
+*Original rules, replaced on 2026-11-13 and kept for reference:* images fade in once (under 300 ms); the viewer opens with a scale-from-thumbnail transition; reduced motion turns this off; no parallax, scroll hijacking or cursor effects.
 
 ## Visual references
 
