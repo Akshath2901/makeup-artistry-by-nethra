@@ -11,13 +11,14 @@ A premium website for a professional bridal makeup artist in Hyderabad, India. B
 Read these before planning or writing code:
 
 1. `docs/phase-1-discovery-plan.md` — approved product plan.
-2. `docs/phase-2-design-direction.md` — design direction. **Status: DRAFT, not yet approved.**
+2. `docs/phase-2-design-direction.md` — design direction. **Status: APPROVED by the project owner on 2026-11-12** (recommended option for all four decisions).
 3. `docs/briefs/claude-code-handoff.md` — how we work in Claude Code.
 4. `docs/briefs/phase-1-brief.md` and `docs/briefs/phase-2-brief.md` — original briefs.
+5. `AGENTS.md` — Next.js 16 notes: read the matching guide in `node_modules/next/dist/docs/` before writing Next.js code.
 
 Where Phase 2 marks a decision as resolved, it overrides Phase 1.
 
-**While Phase 2 is a draft:** inspection and environment setup only. Do not build pages, components or design tokens until the project owner confirms approval.
+**Build order (decided 2026-11-12):** structure first. Build the first release exactly as the approved plans describe, with placeholders, so it can be shown to the client. 3D animation, live video and a fuller booking platform are ideas for a later phase. Do not build them until the project owner approves them as a planned change.
 
 If an unresolved requirement affects what you are about to build, stop and ask. Never silently decide.
 

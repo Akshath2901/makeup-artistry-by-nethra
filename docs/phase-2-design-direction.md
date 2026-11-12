@@ -1,4 +1,4 @@
-> **Status: DRAFT — NOT YET APPROVED.** Do not implement beyond environment setup until the four decisions in the last section are approved.
+> **Status: APPROVED by the project owner on 2026-11-12.** All four recommendations in the last section are approved: Direction A (The Quiet Portrait), Fraunces + Schibsted Grotesk, Palette A (Ivory and Ink), and the WhatsApp composer with no email form. Font and palette still need the client's sign-off once her photos are placed in the design.
 > Diagrams and the palette image are omitted in this export; the palette specimen is in docs/assets/. Online doc: https://claude.ai/code/artifact/b7a4f156-3408-40fb-b008-9ec6ca63d917
 
 # Bridal Makeup Website — Phase 2 Design Direction
