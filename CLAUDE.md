@@ -36,9 +36,9 @@ Use explicit, searchable placeholders instead, for example `[TBD: WhatsApp numbe
 ## Scope limits
 
 - No database, authentication, payments, CMS or extra backend services unless the project owner confirms a requirement.
-- Candidate stack from planning: Next.js, TypeScript, Tailwind CSS, Vercel. Confirm with the project owner before scaffolding.
+- Stack (confirmed by the project owner, 2026-11-12): Next.js (App Router), TypeScript, Tailwind CSS, hosted on Vercel. May be revisited later; any change needs project-owner approval.
 - Add a dependency only after explaining why it is needed and getting approval.
-- Use one package manager, chosen at setup and recorded here.
+- Package manager: **npm** (confirmed 2026-11-12). Do not use pnpm or yarn in this project.
 
 ## Safety rules
 
