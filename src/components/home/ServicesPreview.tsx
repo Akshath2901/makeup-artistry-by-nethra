@@ -18,7 +18,7 @@ export function ServicesPreview() {
       <div className="page-container section-space">
         <div className="page-grid gap-y-10">
           <SectionHeading
-            index="04"
+            index="03"
             label="Services"
             title="Signature services"
             id="services-title"
@@ -35,7 +35,7 @@ export function ServicesPreview() {
               >
                 <span className="text-caption pt-1.5 text-muted tabular-nums">{String(i + 1).padStart(2, "0")}</span>
                 <div>
-                  <h3 className="text-h3">
+                  <h3 className="text-h2">
                     {service.name.startsWith("[TBD") ? (
                       <span className="placeholder-text">{service.name}</span>
                     ) : (

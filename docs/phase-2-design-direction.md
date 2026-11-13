@@ -200,7 +200,7 @@ Trade-off to approve: Velora loses a record of enquiries, because they live only
 
 ### Motion
 
-> **Updated and approved by the project owner on 2026-11-13:** a richer but restrained motion experience, built CSS-first. The full rules are under "Motion decision" in `docs/mobile-first-requirements.md`; this summary must stay consistent with them.
+> **Updated 2026-11-13 (Stage 5.1):** the owner approved GSAP with ScrollTrigger, SplitText and Flip. See the Stage 5.1 update in `docs/mobile-first-requirements.md`. Earlier on 2026-11-13: a richer but restrained motion experience, built CSS-first. The full rules are under "Motion decision" in `docs/mobile-first-requirements.md`; this summary must stay consistent with them.
 
 Motion should feel like turning the pages of a printed editorial: quiet, precise, and always secondary to the photographs. Mobile performance takes priority over visual effects.
 

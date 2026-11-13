@@ -1,38 +1,49 @@
 import Link from "next/link";
-import { Photo } from "@/components/ui/Photo";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { PhotoPlaceholder } from "@/components/ui/PhotoPlaceholder";
+import { Ornament } from "@/components/ui/Ornament";
 import { artist } from "@/content/home";
+import { site } from "@/content/site";
+import { SectionMarker } from "@/components/graphics/motifs";
 
 /**
- * Section 02 — meet the artist. A portrait set slightly in from the edge,
- * paired with a few sentences in her own voice (set large, as a pull
- * quote) and a route to About.
+ * Meet the artist: typography-led. Her own words are set large, as the
+ * section's image; a framed portrait slot waits for her real photograph
+ * (never a stock image: that would misrepresent who she is).
  */
 export function ArtistIntro() {
   return (
     <section aria-labelledby="artist-title" className="page-container section-space">
-      <SectionHeading index="01" label="The artist" title="Meet the artist" id="artist-title" />
+      <SectionMarker index="01" label="The artist" />
 
-      <div className="page-grid mt-10 gap-y-10 lg:mt-16 lg:items-center">
-        <div className="col-span-3 sm:col-span-4 lg:col-span-4 lg:col-start-2">
-          <Photo
-            brief={artist.photo}
-            ratio="2:3"
-            sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 75vw"
-            reveal="scroll"
-            className="photo-hover"
-          />
-        </div>
-
-        <div className="col-span-4 sm:col-span-4 sm:self-end lg:col-span-5 lg:col-start-7 lg:self-center">
-          <blockquote className="text-h2 font-light italic" data-reveal="text">
+      <div className="page-grid mt-12 gap-y-14 lg:mt-20">
+        <div className="col-span-4 sm:col-span-8 lg:col-span-7">
+          <h2 id="artist-title" className="text-eyebrow text-muted" data-reveal="rise">
+            Meet {site.artistName}
+          </h2>
+          <blockquote className="text-statement mt-6 italic" data-reveal="text">
             <p className="placeholder-text">{artist.intro}</p>
           </blockquote>
+          <Ornament className="mt-10" />
+          <p className="text-lead mt-8 max-w-(--container-prose) text-muted" data-reveal="rise">
+            <span className="placeholder-text">{artist.story}</span>
+          </p>
           <p className="mt-8" data-reveal="rise">
             <Link href="/about" className="link-text text-label inline-flex min-h-11 items-center">
-              About the artist
+              About the artist →
             </Link>
           </p>
+        </div>
+
+        <div className="col-span-3 col-start-2 sm:col-span-4 sm:col-start-5 lg:col-span-4 lg:col-start-9 lg:mt-32">
+          <div className="arch-mask">
+            <PhotoPlaceholder
+              ratio="2:3"
+              label={artist.photo.subject}
+              composition={artist.photo.composition}
+              treatment={artist.photo.treatment}
+              reveal="scroll"
+            />
+          </div>
         </div>
       </div>
     </section>

@@ -25,11 +25,18 @@ If an unresolved requirement affects what you are about to build, stop and ask. 
 
 ## Never invent client content
 
-The following are not confirmed. Do not make them up, even as "example" content that ships:
+**Confirmed identity (Stage 6, 2026-11-13).** These replace the temporary "KRITI" development identity and live only in `src/content/site.ts`:
 
-- the artist's name, positioning line, bio and all copy
+- Artist: **Nethra Gollapudi**. Brand: **Makeup Artistry by Nethra**. Brand ID: `makeupartistrybynethra`.
+- Email: `nethragollapudi2455@gmail.com` (public on the site, as a mailto link).
+
+The tagline "The Art of Bridal Beauty." was carried over from the development identity and still needs the client's confirmation.
+
+Everything else below is still not confirmed. Do not make it up, even as "example" content that ships:
+
+- positioning line, bio and all other copy
 - services, prices, booking steps, service areas
-- WhatsApp number, email, domain, Instagram handle
+- WhatsApp number, phone, domain, Instagram handle (whether the brand ID is also her Instagram handle is unconfirmed)
 - reviews, testimonials, credentials, awards, numbers
 - photographs (no stock images presented as her work)
 
@@ -73,7 +80,8 @@ Never claim something works, a test passed or a deploy succeeded unless it was a
 - Use the design tokens, type scale, spacing, breakpoints and aspect ratios from the Phase 2 doc. No ad-hoc colours, sizes or fonts.
 - One primary action per screen. WhatsApp is the primary enquiry path.
 - No carousels, decorative statistics, floating widgets or gradients.
-- Motion: richer but restrained, CSS-first (approved 2026-11-13). Follow "Motion decision" in `docs/mobile-first-requirements.md`: typography reveals, image mask reveals, light scroll reveals, mobile menu and page transitions where practical. No heavy animation libraries, WebGL, 3D, looping motion, parallax or scroll-jacking. Respect reduced motion; all content works without animation. Mobile performance beats visual effects.
+- Motion (Stage 5.1, approved by the project owner 2026-11-13): **GSAP 3.15.1** with ScrollTrigger, SplitText and Flip is the advanced motion engine; CSS stays for hovers, underlines, menu and simple load entrances. All GSAP code lives in `src/lib/motion/` and `src/components/motion/`. Allowed: welcome intro (once per session, skippable), scroll-triggered and scroll-linked reveals, subtle parallax-like image movement, desktop-only pinned sections. Not allowed: Lenis or other scroll libraries, WebGL, 3D, looping decorative motion, scroll-jacking. Respect reduced motion; all content works without animation. Mobile performance beats visual effects. Details: "Motion decision" in `docs/mobile-first-requirements.md`.
+- Photography (Stage 5.1, owner decision 2026-11-13): exactly **six** unique demo photographs across the whole site (`src/content/portfolio.ts`). Do not add more; reuse them with different crops.
 - Accessibility target: WCAG 2.2 AA. Respect reduced-motion settings. Nothing essential depends on hover.
 
 ## Communication

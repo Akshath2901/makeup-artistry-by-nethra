@@ -10,14 +10,14 @@ const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
  * vertical on phones, horizontal on desktop. Only step one is approved;
  * the rest are visible placeholders until the client confirms them.
  */
-export function BookingSteps() {
+export function BookingSteps({ index = "04" }: { index?: string } = {}) {
   return (
     <section aria-labelledby="booking-title" className="page-container section-space">
-      <SectionHeading index="05" label="Booking" title="How booking works" id="booking-title" />
+      <SectionHeading index={index} label="Booking" title="How booking works" id="booking-title" />
 
       <div className="relative mt-12 lg:mt-20">
         {/* Connecting lines: vertical on phones and tablets, horizontal on desktop. */}
-        <span className="fine-line-y absolute top-2 bottom-2 left-[0.3125rem] lg:hidden" data-reveal="line-y" aria-hidden="true" />
+        <span className="fine-line-y absolute top-2 bottom-2 left-[0.3125rem] lg:hidden" data-scrub="draw-y" aria-hidden="true" />
         <span className="fine-line absolute top-[0.3125rem] right-0 left-0 max-lg:hidden" data-reveal="line" aria-hidden="true" />
 
         <ol className="flex flex-col gap-10 lg:grid lg:grid-cols-4 lg:gap-6">

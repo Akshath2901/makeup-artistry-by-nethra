@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { SectionMarker } from "@/components/graphics/motifs";
 
 /**
  * Editorial section opening: a numbered label on a fine line that draws
@@ -20,15 +21,7 @@ export function SectionHeading({
 }) {
   return (
     <div className={className}>
-      <div className="flex items-center gap-4">
-        <span className="text-caption text-muted tabular-nums" data-reveal="rise">
-          {index}
-        </span>
-        <span className="fine-line flex-1" data-reveal="line" aria-hidden="true" />
-        <span className="text-caption text-muted" data-reveal="rise">
-          {label}
-        </span>
-      </div>
+      <SectionMarker index={index} label={label} />
       <h2 id={id} className="text-h2 mt-6 lg:mt-8" data-reveal="text">
         {title}
       </h2>

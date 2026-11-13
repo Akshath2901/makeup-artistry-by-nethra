@@ -179,3 +179,16 @@ How it is built:
 - `prefers-reduced-motion: reduce` turns all movement off; content appears immediately and stays fully accessible.
 
 Not allowed: heavy animation libraries, WebGL or 3D, continuous or looping motion, parallax, scroll-jacking, cursor effects, hover-only effects, and anything that delays access to content.
+
+## Motion decision, update for Stage 5.1 (2026-11-13)
+
+The project owner explicitly approved an expanded motion stack for Stage 5.1. This extends the CSS-only decision above:
+
+- **GSAP 3.15.1** (Standard no-charge licence, which includes all plugins) with **ScrollTrigger**, **SplitText** and **Flip**.
+- GSAP drives choreography: the welcome intro, the hero timeline, scroll reveals, line-by-line heading reveals, image masks, scroll-linked image movement and desktop-only pinned sections.
+- CSS still handles hovers, underlines, the mobile menu, page transitions and simple load entrances.
+- Lenis smooth scrolling was evaluated and **not** added: native scrolling is better for touch, keyboard and accessibility, and ScrollTrigger does not need it.
+- Every GSAP animation is created inside `gsap.matchMedia()` with `(prefers-reduced-motion: no-preference)`, so reduced motion gets no movement and content shows immediately.
+- Pinned sections run only at 1024 px and wider. Phones get a non-pinned, flowing version.
+- Animations are cleaned up on unmount (GSAP context / matchMedia revert), and work under React Strict Mode.
+- Content must never depend on animation. Pre-hidden hero content has a CSS failsafe that shows it if JavaScript does not run.

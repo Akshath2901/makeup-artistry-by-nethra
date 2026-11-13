@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { mainNav, site } from "@/content/site";
+import { LotusDivider } from "@/components/graphics/motifs";
+import { brand, mainNav, site } from "@/content/site";
 import { instagramHref, whatsappHref } from "@/lib/whatsapp";
 
 /**
@@ -18,7 +19,19 @@ export function SiteFooter() {
       <div className="page-container pt-16 pb-10 lg:pt-24 lg:pb-12">
         <div className="page-grid gap-y-12">
           <div className="col-span-4 sm:col-span-8 lg:col-span-5" data-reveal="rise">
-            <p className="text-h2">{site.name}</p>
+            {/* Full brand lockup */}
+            <p className="flex flex-col gap-2" aria-label={brand.name}>
+              <span className="font-serif text-[clamp(1.375rem,1.1rem+1.1vw,2rem)] leading-none font-light tracking-[0.18em] uppercase" aria-hidden="true">
+                {brand.wordmark.primary}
+              </span>
+              <span className="text-h2 font-light italic text-muted" aria-hidden="true">
+                {brand.wordmark.secondary}
+              </span>
+            </p>
+            <LotusDivider className="mt-6 w-48" />
+            <p className="text-eyebrow mt-4 text-muted">
+              {brand.artistName} · {brand.specialisation} · {brand.city}
+            </p>
             <p className="text-body mt-4 max-w-(--container-prose) text-muted">
               <span className="placeholder-text">{site.serviceArea}</span>
             </p>
@@ -67,13 +80,27 @@ export function SiteFooter() {
                   <span className="text-body placeholder-text">[TBD: Instagram handle]</span>
                 )}
               </li>
+              <li className="flex min-h-11 items-center">
+                <a href={`mailto:${site.email}`} className="nav-link text-body [overflow-wrap:anywhere]">
+                  {site.email}
+                </a>
+              </li>
+              <li className="flex min-h-11 items-center">
+                {site.phone ? (
+                  <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="nav-link text-body">
+                    {site.phone}
+                  </a>
+                ) : (
+                  <span className="text-body placeholder-text">[TBD: Phone number]</span>
+                )}
+              </li>
             </ul>
           </div>
         </div>
 
         <div className="mt-16 flex flex-col gap-2 border-t border-rule pt-6 sm:flex-row sm:items-center sm:justify-between lg:mt-24">
           <p className="text-caption text-muted">
-            © <span className="placeholder-text">[TBD: Year]</span> {site.copyrightHolder}
+            © {site.copyrightYear} {site.copyrightHolder}
           </p>
           <Link href="/privacy" className="nav-link text-caption text-muted">
             Privacy notice

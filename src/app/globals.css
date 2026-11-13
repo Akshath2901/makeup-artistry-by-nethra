@@ -111,7 +111,7 @@
   }
 
   /* Lock page scroll while the full-screen mobile menu is open. */
-  html:has(.menu-dialog[open]) {
+  html:has(.menu-dialog[open], .lightbox[open]) {
     overflow: hidden;
   }
 
@@ -396,49 +396,21 @@
     animation: image-in 900ms var(--ease-curtain) var(--delay, 0ms) backwards;
   }
 
-  .enter-image > * {
+  .enter-image > :not(.demo-tag) {
     animation: image-settle 1200ms var(--ease-editorial) var(--delay, 0ms) backwards;
   }
 
-  /* 2. Scroll-triggered reveals: add data-reveal="rise" | "text" | "image".
-        RevealObserver adds .js-reveal to <html> and marks elements with
-        data-revealed as they enter the screen. Without JavaScript,
-        nothing is hidden. Elements already on screen at load are shown
-        immediately (data-revealed="instant") to avoid a flash. */
-  .js-reveal [data-reveal]:not([data-revealed]) {
-    opacity: 0;
-  }
-
-  .js-reveal [data-reveal="image"]:not([data-revealed]) {
-    opacity: 1;
-    clip-path: inset(100% 0 0 0);
-  }
-
-  [data-reveal="rise"][data-revealed="animate"] {
-    animation: rise-in var(--duration-slow) var(--ease-editorial) var(--delay, 0ms) backwards;
-  }
-
-  [data-reveal="text"][data-revealed="animate"] {
-    animation: text-in 700ms var(--ease-editorial) var(--delay, 0ms) backwards;
-  }
-
-  [data-reveal="image"][data-revealed="animate"] {
-    animation: image-in 900ms var(--ease-curtain) var(--delay, 0ms) backwards;
-  }
-
-  [data-reveal="image"][data-revealed="animate"] > * {
-    animation: image-settle 1200ms var(--ease-editorial) var(--delay, 0ms) backwards;
-  }
 }
 
-/* Hero portrait on phones: full width at 4:5, but never taller than 54%
-   of the screen, so the name and enquiry action reach the first screen.
+/* Hero portrait on phones: 4:5 in the arch, but never taller than 40% of
+   the screen, so the enquiry button reaches the first screen on common
+   phones (measured: 360×780, 375×812, 390×844, 414×896, 430×932). The
+   arch narrows and keeps its 4:5 shape; it never squashes.
    Real photos crop with object-fit and their focus point. */
 @media (width < 40rem) {
   .hero-photo > * {
-    aspect-ratio: auto;
-    width: 100%;
-    height: min(125vw, 54svh); /* 4:5 of the screen width, capped */
+    max-height: 40svh;
+    margin-inline: auto;
   }
 }
 
@@ -473,34 +445,19 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .js-reveal [data-reveal="line"]:not([data-revealed]) {
-    opacity: 1;
-    transform: scaleX(0);
-  }
-
-  .js-reveal [data-reveal="line-y"]:not([data-revealed]) {
-    opacity: 1;
-    transform: scaleY(0);
-  }
-
-  [data-reveal="line"][data-revealed="animate"],
   .enter-line {
     animation: line-draw 1100ms var(--ease-curtain) var(--delay, 0ms) backwards;
-  }
-
-  [data-reveal="line-y"][data-revealed="animate"] {
-    animation: line-draw-y 1400ms var(--ease-curtain) var(--delay, 0ms) backwards;
   }
 }
 
 /* Subtle image response on devices that can hover. Never needed to use
    the site, and off for reduced motion. */
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .photo-hover > * {
+  .photo-hover > :not(.demo-tag) {
     transition: transform 900ms var(--ease-editorial);
   }
 
-  .photo-hover:hover > * {
+  .photo-hover:hover > :not(.demo-tag) {
     transform: scale(1.025);
   }
 }
@@ -518,8 +475,7 @@
 
 /* Phones: shorter image reveals so content arrives quickly. */
 @media (prefers-reduced-motion: no-preference) and (width < 40rem) {
-  .enter-image,
-  [data-reveal="image"][data-revealed="animate"] {
+  .enter-image {
     animation-duration: 700ms;
   }
 }
@@ -650,6 +606,188 @@
 }
 
 /* ------------------------------------------------------------------ */
+/* Demonstration label: shown on every temporary stock photograph so it */
+/* is never mistaken for the artist's own work. Disappears when an      */
+/* image's status changes to "client-verified".                         */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .demo-tag {
+    position: absolute;
+    left: 0.5rem;
+    bottom: 0.5rem;
+    z-index: 1;
+    padding: 0.25rem 0.5rem;
+    background-color: color-mix(in srgb, var(--color-paper) 90%, transparent);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    pointer-events: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Portfolio filters (Phase 2: words, muted; the active one is ink and  */
+/* underlined). Keyboard-selectable as tabs.                            */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .filter-tab {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--color-muted);
+    transition: color var(--duration-quick) var(--ease-editorial);
+  }
+
+  .filter-tab::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0.5rem;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--duration-base) var(--ease-editorial);
+  }
+
+  /* Phones: one swipeable row, no visible scrollbar. */
+  .filter-row {
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .filter-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-tab[aria-selected="true"] {
+    color: var(--color-ink);
+  }
+
+  .filter-tab[aria-selected="true"]::after {
+    transform: scaleX(1);
+  }
+
+  @media (hover: hover) {
+    .filter-tab:hover {
+      color: var(--color-ink);
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Fine-line SVG ornaments: strokes draw in once (pathLength="1").      */
+/* ------------------------------------------------------------------ */
+
+@keyframes svg-draw {
+  from {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .enter-svg :is(path, line, circle) {
+    stroke-dasharray: 1;
+    animation: svg-draw 1800ms var(--ease-curtain) var(--delay, 0ms) backwards;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Lightbox: a full-screen native <dialog> on ink. It fades in; each    */
+/* photograph settles in from a slightly smaller scale.                 */
+/* ------------------------------------------------------------------ */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.lightbox::backdrop {
+  background-color: transparent;
+}
+
+/* Accent is too dark on ink, so focus rings switch to paper. */
+.lightbox :focus-visible {
+  outline-color: var(--color-paper);
+}
+
+.lightbox-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding-inline: 0.75rem;
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+
+.lightbox-button:disabled {
+  opacity: 0.35;
+}
+
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lightbox {
+    opacity: 0;
+    transition:
+      opacity var(--duration-base) var(--ease-editorial),
+      overlay var(--duration-base) allow-discrete,
+      display var(--duration-base) allow-discrete;
+  }
+
+  .lightbox[open] {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .lightbox[open] {
+      opacity: 0;
+    }
+  }
+
+  .lightbox-figure {
+    animation: lightbox-in 500ms var(--ease-editorial) backwards;
+  }
+
+  @media (hover: hover) {
+    .lightbox-button:not(:disabled):hover svg {
+      transform: translateX(var(--nudge, 0));
+    }
+
+    .lightbox-button svg {
+      transition: transform var(--duration-base) var(--ease-editorial);
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* Page transitions (React <ViewTransition>, see PageTransition.tsx).   */
 /* The old page leaves quickly; the new one arrives gently. The header  */
 /* stays still as an anchor. Browsers without support just navigate.   */
@@ -703,5 +841,214 @@
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Stage 5.1: oversized editorial type (extends the Phase 2 scale).     */
+/* ------------------------------------------------------------------ */
+
+/* Oversized display type, set as image (the 404 numerals). */
+@utility text-mega {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(4.5rem, 1rem + 19vw, 13rem);
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+}
+
+/* Page openings: one large statement per page. */
+@utility text-statement {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(2.75rem, 1.6rem + 4.6vw, 6.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/* Small uppercase-free label used for running heads and indexes. */
+@utility text-eyebrow {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------------ */
+/* Pre-hide with failsafe: [data-prehide] content is hidden before the  */
+/* first paint (only when motion is on), so GSAP can reveal it without */
+/* a flash. If JavaScript never starts, it appears after 3.5 s anyway. */
+/* ------------------------------------------------------------------ */
+
+@keyframes failsafe-show {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes failsafe-hide {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+.js-motion:not(.motion-on) [data-prehide] {
+  opacity: 0;
+  animation: failsafe-show 0.01s 3.5s forwards;
+}
+
+/* ------------------------------------------------------------------ */
+/* Welcome intro: once per session, home page only. Hidden with reduced */
+/* motion, after it has played, and (failsafe) if JavaScript stalls.   */
+/* ------------------------------------------------------------------ */
+
+.welcome {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+
+html:not(.js-motion) .welcome,
+.intro-seen .welcome {
+  display: none;
+}
+
+.js-motion:not(.motion-on) .welcome {
+  animation: failsafe-hide 0.01s 4.5s forwards;
+}
+
+/* Hairline frame used around image placeholders and portraits. */
+@layer components {
+  .frame-corners {
+    position: relative;
+  }
+
+  .frame-corners::before,
+  .frame-corners::after {
+    content: "";
+    position: absolute;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-color: var(--color-muted);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .frame-corners::before {
+    top: -0.625rem;
+    left: -0.625rem;
+    border-top: 1px solid;
+    border-left: 1px solid;
+  }
+
+  .frame-corners::after {
+    right: -0.625rem;
+    bottom: -0.625rem;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+  }
+}
+
+/* Questions: native <details>, with a plus that turns to a minus. */
+@layer components {
+  .faq summary {
+    list-style: none;
+  }
+
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-mark {
+    position: relative;
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .faq-mark::before,
+  .faq-mark::after {
+    content: "";
+    position: absolute;
+    inset: 50% 0 auto;
+    height: 1px;
+    background-color: currentColor;
+    transition: transform var(--duration-base) var(--ease-editorial);
+  }
+
+  .faq-mark::after {
+    transform: rotate(90deg);
+  }
+
+  .faq[open] .faq-mark::after {
+    transform: rotate(0deg);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Stage 6: brand graphics                                             */
+/* ------------------------------------------------------------------ */
+
+/* The palace-arch silhouette (clip path defined once in the layout). */
+.arch-mask {
+  clip-path: url(#arch-clip);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Arch photographs arrive by rising, so the silhouette never changes. */
+  .arch-mask.enter-image {
+    animation: rise-in 900ms var(--ease-editorial) var(--delay, 0ms) backwards;
+  }
+}
+
+/* Wordmark lockup: MAKEUP ARTISTRY over an italic "by Nethra". */
+@utility text-wordmark-primary {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(0.8125rem, 0.78rem + 0.15vw, 0.9375rem);
+  line-height: 1;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@utility text-wordmark-secondary {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.1875rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Invitation-style frame lines (welcome, closing bands). */
+@layer components {
+  .invite-frame {
+    position: absolute;
+    inset: 0.75rem;
+    border: 1px solid var(--color-rule);
+    pointer-events: none;
+  }
+
+  .invite-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0.375rem;
+    border: 1px solid var(--color-rule);
+  }
+
+  @media (width >= 64rem) {
+    .invite-frame {
+      inset: 1.5rem;
+    }
   }
 }

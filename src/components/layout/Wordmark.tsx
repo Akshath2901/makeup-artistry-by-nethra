@@ -1,18 +1,21 @@
 import Link from "next/link";
-import { site } from "@/content/site";
+import { brand } from "@/content/site";
 
 /**
- * Typographic wordmark placeholder (Phase 2: "a simple typographic
- * wordmark" until the client supplies a logo). Links home.
+ * The brand lockup: MAKEUP ARTISTRY in spaced capitals over an italic
+ * "by Nethra". Set in Fraunces, so it stays a typographic wordmark until
+ * the client supplies a logo. Links home; read aloud as the brand name.
  */
 export function Wordmark({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <Link
       href="/"
       onClick={onNavigate}
-      className="wordmark text-wordmark inline-flex min-h-11 items-center text-ink"
+      aria-label={`${brand.name}, home`}
+      className="wordmark inline-flex min-h-12 flex-col justify-center gap-1 text-ink"
     >
-      {site.name}
+      <span className="text-wordmark-primary">{brand.wordmark.primary}</span>
+      <span className="text-wordmark-secondary pl-[0.1em] text-muted">{brand.wordmark.secondary}</span>
     </Link>
   );
 }
