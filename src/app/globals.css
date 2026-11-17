@@ -788,24 +788,36 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Page transitions (React <ViewTransition>, see PageTransition.tsx).   */
-/* The old page leaves quickly; the new one arrives gently. The header  */
-/* stays still as an anchor. Browsers without support just navigate.   */
+/* Page transitions (React <ViewTransition>, see PageTransition.tsx):    */
+/* the palace doors, a short echo of the welcome. The old page closes   */
+/* toward the centre like two doors meeting; the new page opens out     */
+/* from the seam. About 0.85 s. The header stays still as an anchor.    */
+/* Browsers without support just navigate; reduced motion turns it off. */
 /* ------------------------------------------------------------------ */
 
 ::view-transition-old(.page-exit) {
-  animation: 160ms var(--ease-editorial) both fade-in reverse;
+  animation: 360ms var(--ease-curtain) both doors-close;
 }
 
 ::view-transition-new(.page-enter) {
-  animation:
-    320ms var(--ease-editorial) 120ms both fade-in,
-    500ms var(--ease-editorial) both page-rise;
+  animation: 560ms var(--ease-curtain) 280ms both doors-open;
 }
 
-@keyframes page-rise {
+@keyframes doors-close {
   from {
-    transform: translateY(var(--reveal-distance));
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 50% 0 50%);
+  }
+}
+
+@keyframes doors-open {
+  from {
+    clip-path: inset(0 50% 0 50%);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
   }
 }
 
@@ -903,8 +915,9 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Welcome intro: once per session, home page only. Hidden with reduced */
-/* motion, after it has played, and (failsafe) if JavaScript stalls.   */
+/* Welcome intro: every full page load, any page (lib/motion/intro.ts).  */
+/* Hidden with reduced motion, once it has played (data-intro="done"),  */
+/* and (failsafe) if JavaScript stalls.                                 */
 /* ------------------------------------------------------------------ */
 
 .welcome {
@@ -918,12 +931,22 @@
 }
 
 html:not(.js-motion) .welcome,
-.intro-seen .welcome {
+html[data-intro="done"] .welcome {
   display: none;
 }
 
 .js-motion:not(.motion-on) .welcome {
   animation: failsafe-hide 0.01s 4.5s forwards;
+}
+
+/* While the welcome covers the page, hold every CSS entrance animation
+   on its first frame, so page openings play as the doors part rather than
+   unseen underneath. Pre-hide failsafes are left running. Released when
+   the doors open (data-intro="open") or by the 7 s failsafe. */
+html[data-intro="playing"] :is(header, main, footer) :not([data-prehide]),
+html[data-intro="playing"] :is(header, main, footer) :not([data-prehide])::before,
+html[data-intro="playing"] :is(header, main, footer) :not([data-prehide])::after {
+  animation-play-state: paused;
 }
 
 /* Hairline frame used around image placeholders and portraits. */
@@ -1004,9 +1027,22 @@ html:not(.js-motion) .welcome,
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* Arch photographs arrive by rising, so the silhouette never changes. */
+  /* Arch photographs: the arch rises in and the photograph is unveiled
+     upward inside it, so the silhouette never changes; the fine arch line
+     then traces around it. */
   .arch-mask.enter-image {
-    animation: rise-in 900ms var(--ease-editorial) var(--delay, 0ms) backwards;
+    animation: rise-in 700ms var(--ease-editorial) var(--delay, 0ms) backwards;
+  }
+
+  .arch-mask.enter-image > div:first-child {
+    animation:
+      image-in 1300ms var(--ease-curtain) calc(var(--delay, 0ms) + 150ms) backwards,
+      image-settle 1600ms var(--ease-editorial) var(--delay, 0ms) backwards;
+  }
+
+  .arch-mask.enter-image > svg :is(path, line, circle) {
+    stroke-dasharray: 1;
+    animation: svg-draw 1600ms var(--ease-curtain) calc(var(--delay, 0ms) + 700ms) backwards;
   }
 }
 

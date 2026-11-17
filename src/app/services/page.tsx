@@ -8,7 +8,7 @@ import { PageTransition } from "@/components/motion/PageTransition";
 import { imageBrief } from "@/components/portfolio/imageBrief";
 import { Photo } from "@/components/ui/Photo";
 import { getImage, looks, type CategoryId } from "@/content/portfolio";
-import { enquireHref } from "@/content/site";
+import { EnquireLink } from "@/components/ui/EnquireLink";
 import { SectionMarker } from "@/components/graphics/motifs";
 
 export const metadata: Metadata = {
@@ -106,9 +106,9 @@ export default function ServicesPage() {
                     ))}
                   </dl>
                   <p className="mt-8 flex flex-wrap gap-x-8" data-reveal="rise">
-                    <Link href={enquireHref} className="link-text text-label inline-flex min-h-11 items-center">
+                    <EnquireLink className="link-text text-label inline-flex min-h-11 items-center">
                       Ask about {occasion.name.toLowerCase()}
-                    </Link>
+                    </EnquireLink>
                     <Link href={`/portfolio/${look.slug}`} className="link-text text-label inline-flex min-h-11 items-center text-muted">
                       See the look: {look.title} →
                     </Link>

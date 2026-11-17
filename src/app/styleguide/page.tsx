@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { PhotoPlaceholder, type PhotoRatio } from "@/components/ui/PhotoPlaceholder";
 
@@ -109,8 +109,8 @@ export default function StyleguidePage() {
           </div>
           <div className="mt-8 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-10" data-reveal="rise">
             <Link href="/enquire" className="btn-primary w-full sm:w-auto">
-              <WhatsAppIcon />
-              Enquire on WhatsApp
+              <InstagramIcon />
+              Enquire on Instagram
             </Link>
             <Link href="/portfolio" className="link-text text-body inline-flex min-h-11 items-center">
               Text link

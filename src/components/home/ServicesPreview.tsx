@@ -1,8 +1,8 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
+import { EnquireLink } from "@/components/ui/EnquireLink";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { servicesPreview } from "@/content/home";
-import { enquireHref } from "@/content/site";
 
 const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
 
@@ -46,13 +46,12 @@ export function ServicesPreview() {
                     <span className="placeholder-text">{service.summary}</span>
                   </p>
                 </div>
-                <Link
-                  href={enquireHref}
+                <EnquireLink
                   className="link-text text-label col-start-2 mt-3 inline-flex min-h-11 items-center justify-self-start sm:col-start-3 sm:mt-0"
-                  aria-label={`Ask about ${service.name}`}
+                  label={`Ask about ${service.name}`}
                 >
                   Ask about this
-                </Link>
+                </EnquireLink>
               </li>
             ))}
           </ol>

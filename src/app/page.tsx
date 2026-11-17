@@ -6,13 +6,12 @@ import { MobileEnquiryBar } from "@/components/home/MobileEnquiryBar";
 import { OccasionsBand } from "@/components/home/OccasionsBand";
 import { ServicesPreview } from "@/components/home/ServicesPreview";
 import { SignatureLooks } from "@/components/home/SignatureLooks";
-import { WelcomeIntro } from "@/components/home/WelcomeIntro";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { looks } from "@/content/portfolio";
 
 /**
  * Home: welcome → discover the artist → see the looks → understand the
- * services → know what happens next → enquire on WhatsApp.
+ * services → know what happens next → enquire on Instagram.
  * "Kind words" (Phase 2) is left out until genuine reviews with
  * permission exist.
  */
@@ -23,7 +22,6 @@ export default function HomePage() {
 
   return (
     <>
-      <WelcomeIntro />
       <PageTransition>
         <Hero />
         <ArtistIntro />

@@ -2,17 +2,17 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import { LotusDivider } from "@/components/graphics/motifs";
 import { brand, mainNav, site } from "@/content/site";
-import { instagramHref, whatsappHref } from "@/lib/whatsapp";
+import { instagramProfileHref } from "@/lib/instagram";
 
 /**
  * Shared footer (Phase 2): wordmark, service area, the three page links,
- * WhatsApp, Instagram, Privacy notice and copyright. No newsletter, no
- * icon wall. Unknown details show as visible "[TBD: …]" placeholders,
- * never as broken links.
+ * Instagram, email, phone, Privacy notice and copyright. (WhatsApp was
+ * removed when Instagram became the enquiry path, 2026-11-17.) No
+ * newsletter, no icon wall. Unknown details show as visible "[TBD: …]"
+ * placeholders, never as broken links.
  */
 export function SiteFooter() {
-  const whatsapp = whatsappHref(site.whatsappNumber);
-  const instagram = instagramHref(site.instagramHandle);
+  const instagram = instagramProfileHref(site.instagramHandle);
 
   return (
     <footer className="bg-surface text-ink">
@@ -62,15 +62,6 @@ export function SiteFooter() {
           >
             <h2 className="text-caption text-muted">Contact</h2>
             <ul className="mt-3 flex flex-col">
-              <li className="flex min-h-11 items-center">
-                {whatsapp ? (
-                  <a href={whatsapp} className="nav-link text-body" rel="noopener noreferrer" target="_blank">
-                    WhatsApp
-                  </a>
-                ) : (
-                  <span className="text-body placeholder-text">[TBD: WhatsApp number]</span>
-                )}
-              </li>
               <li className="flex min-h-11 items-center">
                 {instagram ? (
                   <a href={instagram} className="nav-link text-body" rel="noopener noreferrer" target="_blank">

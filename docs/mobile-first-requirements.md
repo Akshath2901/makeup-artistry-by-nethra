@@ -103,17 +103,17 @@ Design the mobile navigation independently.
 
 ## 6. Mobile enquiry and booking experience
 
-WhatsApp is the primary conversion action.
+Instagram is the primary conversion action (owner decision 2026-11-17, replacing WhatsApp).
 
-- An easily reached WhatsApp enquiry action.
+- An easily reached "Enquire on Instagram" action.
 - Touch targets of an appropriate size, with clear CTA wording.
 - No tiny or crowded buttons.
 - No complicated multi-step interaction.
 - No horizontal scrolling.
 - Proper spacing around interactive elements.
-- Correct mobile deep-link behaviour once the real WhatsApp number is supplied.
+- Correct mobile deep-link behaviour (the `ig.me/m/<handle>` link opens the Instagram app's messages) once the real handle is supplied.
 
-Do not invent a WhatsApp number or booking information. Any future approved booking pages or enquiry steps follow the same mobile-first standard.
+Do not invent an Instagram handle or booking information. Any future approved booking pages or enquiry steps follow the same mobile-first standard.
 
 ## 7. Mobile performance
 

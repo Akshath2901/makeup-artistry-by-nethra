@@ -36,7 +36,7 @@ Everything else below is still not confirmed. Do not make it up, even as "exampl
 
 - positioning line, bio and all other copy
 - services, prices, booking steps, service areas
-- WhatsApp number, phone, domain, Instagram handle (whether the brand ID is also her Instagram handle is unconfirmed)
+- Instagram handle (the enquiry path; whether the brand ID is also her handle is unconfirmed), phone, domain, promised reply time
 - reviews, testimonials, credentials, awards, numbers
 - photographs (no stock images presented as her work)
 
@@ -78,9 +78,9 @@ Never claim something works, a test passed or a deploy succeeded unless it was a
 ## Design rules (apply once Phase 2 is approved)
 
 - Use the design tokens, type scale, spacing, breakpoints and aspect ratios from the Phase 2 doc. No ad-hoc colours, sizes or fonts.
-- One primary action per screen. WhatsApp is the primary enquiry path.
+- One primary action per screen. **Instagram is the enquiry path** (owner decision 2026-11-17, replacing WhatsApp fully): enquiry actions use `<EnquireLink>` and open a direct message to the handle in `src/content/site.ts`. Do not reintroduce WhatsApp without project-owner approval.
 - No carousels, decorative statistics, floating widgets or gradients.
-- Motion (Stage 5.1, approved by the project owner 2026-11-13): **GSAP 3.15.1** with ScrollTrigger, SplitText and Flip is the advanced motion engine; CSS stays for hovers, underlines, menu and simple load entrances. All GSAP code lives in `src/lib/motion/` and `src/components/motion/`. Allowed: welcome intro (once per session, skippable), scroll-triggered and scroll-linked reveals, subtle parallax-like image movement, desktop-only pinned sections. Not allowed: Lenis or other scroll libraries, WebGL, 3D, looping decorative motion, scroll-jacking. Respect reduced motion; all content works without animation. Mobile performance beats visual effects. Details: "Motion decision" in `docs/mobile-first-requirements.md`.
+- Motion (Stage 5.1, approved by the project owner 2026-11-13): **GSAP 3.15.1** with ScrollTrigger, SplitText and Flip is the advanced motion engine; CSS stays for hovers, underlines, menu and simple load entrances. All GSAP code lives in `src/lib/motion/` and `src/components/motion/`. Allowed: welcome intro (on every full page load, never on navigation between pages, skippable; owner decision 2026-11-17), palace-door page transitions, invitation page openings and ornaments that draw in, scroll-triggered and scroll-linked reveals, subtle parallax-like image movement, desktop-only pinned sections. Not allowed: Lenis or other scroll libraries, WebGL, 3D, looping decorative motion, scroll-jacking. Respect reduced motion; all content works without animation. Mobile performance beats visual effects. Details: "Motion decision" in `docs/mobile-first-requirements.md`.
 - Photography (Stage 5.1, owner decision 2026-11-13): exactly **six** unique demo photographs across the whole site (`src/content/portfolio.ts`). Do not add more; reuse them with different crops.
 - Accessibility target: WCAG 2.2 AA. Respect reduced-motion settings. Nothing essential depends on hover.
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SectionMarker } from "@/components/graphics/motifs";
+import { InvitationCorners, SectionMarker } from "@/components/graphics/motifs";
 import Link from "next/link";
 import { CLOSING_ID, ClosingEnquiry } from "@/components/home/ClosingEnquiry";
 import { MobileEnquiryBar } from "@/components/home/MobileEnquiryBar";
@@ -27,9 +27,10 @@ export default function PortfolioPage() {
   return (
     <PageTransition>
       {/* Opening */}
-      <section id="portfolio-intro" aria-labelledby="portfolio-title" className="page-container pt-12 pb-16 lg:pt-20 lg:pb-24">
+      <section id="portfolio-intro" aria-labelledby="portfolio-title" className="page-container relative overflow-hidden pt-12 pb-16 lg:pt-20 lg:pb-24">
+        <InvitationCorners />
         <p className="text-eyebrow enter-rise text-muted">{site.name} · Portfolio</p>
-        <h1 id="portfolio-title" className="text-statement mt-6 max-w-[12ch] lg:max-w-[14ch]" data-reveal="text" data-prehide>
+        <h1 id="portfolio-title" className="text-statement mt-6 max-w-[12ch] lg:max-w-[14ch]" data-reveal="chars" data-prehide>
           A portfolio of bridal beauty.
         </h1>
         <div className="page-grid mt-10 gap-y-6 lg:mt-14">

@@ -4,10 +4,7 @@ import { useLayoutEffect, useRef } from "react";
 import { CornerFlourish, LotusDivider } from "@/components/graphics/motifs";
 import { brand } from "@/content/site";
 import { EASE, gsap, SplitText } from "@/lib/motion/gsap";
-
-const STORAGE_KEY = "nethra-welcome";
-/** Fired as the doors begin to open, so the hero can begin underneath. */
-export const INTRO_REVEAL_EVENT = "brand:intro-reveal";
+import { INTRO_REVEAL_EVENT } from "@/lib/motion/intro";
 
 /**
  * The royal welcome: an Indian wedding invitation coming alive.
@@ -21,10 +18,14 @@ export const INTRO_REVEAL_EVENT = "brand:intro-reveal";
  *   4. The palace doors: the card parts down the middle and the two doors
  *      slide away, revealing the arch-framed hero as it animates in.
  *
- * Home page only, once per browser session. About 4.4 s. "Skip" or Escape
- * ends it at once. Never shown with reduced motion; a CSS failsafe hides
- * it if JavaScript stalls. Decorative (aria-hidden) apart from Skip: the
- * hero carries the real heading. No audio, no video, no extra photographs.
+ * Plays on every full page load, on any page (owner decision 2026-11-17):
+ * it lives in the root layout, which persists across navigation, so moving
+ * between pages never replays it (pages use the door transition instead).
+ * About 4.4 s. "Skip" or Escape ends it at once. Never shown with reduced
+ * motion. The layout's pre-paint script sets <html data-intro="playing">
+ * and ends it after 10 s if JavaScript stalls (see lib/motion/intro.ts).
+ * Decorative (aria-hidden) apart from Skip: each page carries its real
+ * heading. No audio, no video, no extra photographs.
  */
 export function WelcomeIntro() {
   const ref = useRef<HTMLDivElement>(null);
@@ -35,39 +36,27 @@ export function WelcomeIntro() {
     const el = ref.current;
     if (!el) return;
 
-    const seen = () => {
-      try {
-        return sessionStorage.getItem(STORAGE_KEY) === "1";
-      } catch {
-        return false;
-      }
-    };
-
-    if (!root.classList.contains("js-motion") || root.classList.contains("intro-seen") || seen()) {
-      root.classList.add("intro-seen");
+    if (!root.classList.contains("js-motion") || root.dataset.intro !== "playing") {
       root.dataset.intro = "done";
       return;
     }
-    root.dataset.intro = "playing";
+    // Tells the pre-paint failsafe the welcome is running (it has its own
+    // 9-second safety below), so the failsafe never cuts the doors short.
+    root.setAttribute("data-intro-started", "");
 
     let revealed = false;
     const reveal = () => {
       if (revealed) return;
       revealed = true;
+      if (root.dataset.intro === "playing") root.dataset.intro = "open";
       window.dispatchEvent(new Event(INTRO_REVEAL_EVENT));
     };
     let finished = false;
     const finish = () => {
       if (finished) return;
       finished = true;
-      try {
-        sessionStorage.setItem(STORAGE_KEY, "1");
-      } catch {
-        /* private browsing: the welcome may replay, which is harmless */
-      }
-      root.classList.add("intro-seen");
-      root.dataset.intro = "done";
       reveal();
+      root.dataset.intro = "done";
     };
 
     let tl: gsap.core.Timeline | null = null;

@@ -2,9 +2,9 @@
  * Homepage content.
  *
  * Confirmed facts only (docs/phase-1-discovery-plan.md):
- * bridal makeup, Hyderabad, enquiries happen on WhatsApp.
- * The name and tagline are the owner's temporary development identity
- * (content/site.ts). Everything else is a visible "[TBD: …]" placeholder.
+ * bridal makeup, Hyderabad, enquiries happen on Instagram (owner decision
+ * 2026-11-17, replacing WhatsApp). Identity lives in content/site.ts.
+ * Everything else is a visible "[TBD: …]" placeholder.
  *
  * Photo slots keep their shot-list notes for the client's real photos and,
  * for the preview, are filled with one of the SIX demo photographs via
@@ -67,12 +67,13 @@ export type BookingStep = {
 };
 
 /**
- * Step one is approved (Phase 2: WhatsApp composer with date, venue,
- * people and service). The steps after it are the client's to confirm.
+ * Step one is approved (an Instagram message with date, venue, people and
+ * service; Instagram replaced WhatsApp on 2026-11-17). The steps after it
+ * are the client's to confirm.
  */
 export const bookingSteps: BookingStep[] = [
   {
-    title: "Message on WhatsApp",
+    title: "Message on Instagram",
     detail: "Share your date, venue, how many people need makeup and the service you'd like.",
   },
   { title: "[TBD: Step two, as the artist describes it]", detail: "[TBD: What happens, and when]" },

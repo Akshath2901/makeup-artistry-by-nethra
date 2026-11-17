@@ -25,7 +25,7 @@ const sections = [
     title: "What this website collects",
     body: [
       "You do not need an account to use this website, and it has no forms that send your details to our own server.",
-      "When you enquire, you choose to open WhatsApp with a message. What you share there is handled by WhatsApp under its own privacy policy, and by us only to reply to your enquiry.",
+      "When you enquire, you choose to open Instagram and send a direct message. What you share there is handled by Instagram (Meta) under its own privacy policy, and by us only to reply to your enquiry.",
     ],
   },
   {

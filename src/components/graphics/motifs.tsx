@@ -7,6 +7,8 @@
  * All motifs are decorative: aria-hidden, never carrying meaning.
  */
 
+import type { CSSProperties } from "react";
+
 /*
  * The palace arch: a pointed, gently cusped Mughal-style arch.
  * The same outline (0–1 units) is used to mask photographs and to draw
@@ -83,8 +85,8 @@ export function LotusDivider({
   );
 }
 
-/** Small lotus bud used as a section mark and bullet. */
-export function LotusBud({ className = "" }: { className?: string }) {
+/** Small lotus bud used as a section mark and bullet. `draw`: petals draw in on scroll. */
+export function LotusBud({ className = "", draw = false }: { className?: string; draw?: boolean }) {
   return (
     <svg
       viewBox="0 0 16 16"
@@ -95,11 +97,30 @@ export function LotusBud({ className = "" }: { className?: string }) {
       aria-hidden="true"
       focusable="false"
       className={`inline-block h-4 w-4 shrink-0 ${className}`}
+      data-reveal={draw ? "svg" : undefined}
     >
-      <path d="M8 1.5C5.5 4.5 5.5 9 8 13C10.5 9 10.5 4.5 8 1.5Z" />
-      <path d="M8 13C4.5 12.5 2 10 1.5 7C4.5 7.5 7 9.5 8 13Z" />
-      <path d="M8 13C11.5 12.5 14 10 14.5 7C11.5 7.5 9 9.5 8 13Z" />
+      <path pathLength={1} d="M8 1.5C5.5 4.5 5.5 9 8 13C10.5 9 10.5 4.5 8 1.5Z" />
+      <path pathLength={1} d="M8 13C4.5 12.5 2 10 1.5 7C4.5 7.5 7 9.5 8 13Z" />
+      <path pathLength={1} d="M8 13C11.5 12.5 14 10 14.5 7C11.5 7.5 9 9.5 8 13Z" />
     </svg>
+  );
+}
+
+/**
+ * Invitation corners: four corner flourishes that frame a page opening like
+ * the welcome's invitation card, drawing themselves in one after another.
+ * Place inside a `relative overflow-hidden` section. Kept small and inside
+ * the section's padding on phones, so they never touch the text.
+ */
+export function InvitationCorners() {
+  const base = "pointer-events-none absolute h-9 w-9 text-muted/70 sm:h-12 sm:w-12 lg:h-16 lg:w-16";
+  return (
+    <div aria-hidden="true">
+      <CornerFlourish corner="tl" reveal className={`${base} top-2 left-2 lg:top-4 lg:left-4`} />
+      <CornerFlourish corner="tr" reveal delay={150} className={`${base} top-2 right-2 lg:top-4 lg:right-4`} />
+      <CornerFlourish corner="bl" reveal delay={300} className={`${base} bottom-2 left-2 lg:bottom-4 lg:left-4`} />
+      <CornerFlourish corner="br" reveal delay={450} className={`${base} right-2 bottom-2 lg:right-4 lg:bottom-4`} />
+    </div>
   );
 }
 
@@ -111,11 +132,17 @@ export function CornerFlourish({
   corner = "tl",
   className = "",
   draw = true,
+  reveal = false,
+  delay = 0,
 }: {
   corner?: "tl" | "tr" | "bl" | "br";
   className?: string;
-  /** Mark strokes for drawing in (data-flourish). */
+  /** Mark strokes for drawing in by the welcome timeline (data-flourish). */
   draw?: boolean;
+  /** Draw in on arrival via the site-wide motion system (data-reveal="svg"). */
+  reveal?: boolean;
+  /** Stagger for `reveal`, in milliseconds. */
+  delay?: number;
 }) {
   const flip = { tl: "", tr: "-scale-x-100", bl: "-scale-y-100", br: "-scale-x-100 -scale-y-100" }[corner];
   return (
@@ -129,7 +156,9 @@ export function CornerFlourish({
       aria-hidden="true"
       focusable="false"
       className={`${flip} ${className}`}
-      data-flourish={draw ? "" : undefined}
+      data-flourish={draw && !reveal ? "" : undefined}
+      data-reveal={reveal ? "svg" : undefined}
+      style={reveal && delay ? ({ "--delay": `${delay}ms` } as CSSProperties) : undefined}
     >
       <path pathLength={1} d="M2 118V22Q2 2 22 2H118" />
       <path pathLength={1} d="M10 118V28Q10 10 28 10H118" />
@@ -151,7 +180,7 @@ export function SectionMarker({ index, label, className = "" }: { index: string;
   return (
     <div className={`flex items-center gap-3 text-muted ${className}`}>
       <span className="flex items-center gap-2" data-reveal="rise">
-        <LotusBud />
+        <LotusBud draw />
         <span className="font-serif text-[1.0625rem] italic leading-none tabular-nums">{index}</span>
       </span>
       <span className="fine-line flex-1" data-reveal="line" aria-hidden="true" />

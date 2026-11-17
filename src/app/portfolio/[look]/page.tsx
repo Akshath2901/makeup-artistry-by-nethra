@@ -5,14 +5,13 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { ClosingEnquiry, CLOSING_ID } from "@/components/home/ClosingEnquiry";
 import { MobileEnquiryBar } from "@/components/home/MobileEnquiryBar";
-import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { imageBrief } from "@/components/portfolio/imageBrief";
+import { EnquireLink } from "@/components/ui/EnquireLink";
 import { Ornament } from "@/components/ui/Ornament";
 import { Photo } from "@/components/ui/Photo";
 import { categoryLabel, getImage, getLook, looks } from "@/content/portfolio";
-import { enquireHref, site } from "@/content/site";
-import { whatsappHref } from "@/lib/whatsapp";
 
 /** One page per look, built ahead of time. */
 export function generateStaticParams() {
@@ -56,9 +55,6 @@ async function LookContent({ params }: { params: PageProps<"/portfolio/[look]">[
   const next = looks[(index + 1) % looks.length];
   const number = (i: number) => String(i + 1).padStart(2, "0");
 
-  const message = `Hello ${site.firstName}, I'd love to ask about the "${look.title}" look (${categoryLabel(look.category)}).`;
-  const enquiry = whatsappHref(site.whatsappNumber, message) ?? `${enquireHref}?look=${look.slug}`;
-
   return (
     <PageTransition>
       {/* Opening: title low on the left, photograph tall on the right */}
@@ -89,7 +85,7 @@ async function LookContent({ params }: { params: PageProps<"/portfolio/[look]">[
             <p className="text-eyebrow text-muted tabular-nums" data-reveal="rise">
               Look {number(index)} / {number(looks.length - 1)}
             </p>
-            <h1 id="look-title" className="text-statement mt-5" data-reveal="text">
+            <h1 id="look-title" className="text-statement mt-5" data-reveal="chars">
               {look.title}
             </h1>
             <Ornament className="mt-8" />
@@ -105,10 +101,13 @@ async function LookContent({ params }: { params: PageProps<"/portfolio/[look]">[
               ))}
             </ul>
             <p className="mt-8" data-reveal="rise">
-              <a href={enquiry} className="link-text text-label inline-flex min-h-11 items-center gap-2">
-                <WhatsAppIcon />
-                Ask about this look
-              </a>
+              {/* Instagram cannot pre-write a message, so the caption asks the
+                  visitor to name the look. */}
+              <EnquireLink className="link-text text-label inline-flex min-h-11 items-center gap-2">
+                <InstagramIcon />
+                Ask about this look on Instagram
+              </EnquireLink>
+              <span className="text-caption mt-1 block text-muted">Mention “{look.title}” in your message.</span>
             </p>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Schibsted_Grotesk } from "next/font/google";
 import { ArchClipDefs } from "@/components/graphics/motifs";
+import { WelcomeIntro } from "@/components/home/WelcomeIntro";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { brand, seo } from "@/content/site";
@@ -73,12 +74,15 @@ export const viewport: Viewport = {
 };
 
 /*
- * Runs before first paint: marks motion-capable browsers (so the hero can
- * be pre-hidden without a flash) and remembers whether the welcome intro
- * has played this session. Failsafes in globals.css show content anyway
- * if JavaScript stops after this point.
+ * Runs before first paint: marks motion-capable browsers (so content can
+ * be pre-hidden without a flash) and starts the welcome on every full page
+ * load (<html data-intro="playing">; see lib/motion/intro.ts). Failsafe:
+ * if the welcome has not even started after 7 s (its script failed to
+ * load), the page is released anyway, so content can never stay hidden.
+ * Once started, the welcome ends itself within 9 s (WelcomeIntro). The
+ * event name matches INTRO_REVEAL_EVENT.
  */
-const PRE_PAINT = `(function(){try{var d=document.documentElement;if(!matchMedia("(prefers-reduced-motion: reduce)").matches){d.classList.add("js-motion")}if(sessionStorage.getItem("nethra-welcome")){d.classList.add("intro-seen")}}catch(e){}})();`;
+const PRE_PAINT = `(function(){var d=document.documentElement;try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){d.classList.add("js-motion");d.dataset.intro="playing";setTimeout(function(){if(d.dataset.intro==="playing"&&!d.hasAttribute("data-intro-started")){d.dataset.intro="done";window.dispatchEvent(new Event("brand:intro-reveal"))}},7000)}else{d.dataset.intro="done"}}catch(e){d.dataset.intro="done"}})();`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -87,6 +91,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* First child of <body>: runs before any content is painted. */}
         <script dangerouslySetInnerHTML={{ __html: PRE_PAINT }} />
         <ArchClipDefs />
+        {/* Before the page content, so it decides whether to play before
+            any page animation starts. In the layout, so it plays on every
+            full load but never on navigation between pages. */}
+        <WelcomeIntro />
         <a
           href="#main"
           className="btn-primary fixed top-2 left-2 z-50 -translate-y-24 focus:translate-y-0"

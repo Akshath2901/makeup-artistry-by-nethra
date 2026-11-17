@@ -3,16 +3,18 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import { enquireHref, mainNav, site } from "@/content/site";
-import { instagramHref } from "@/lib/whatsapp";
-import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { mainNav, site } from "@/content/site";
+import { instagramProfileHref } from "@/lib/instagram";
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
+import { EnquireLink } from "@/components/ui/EnquireLink";
 import { Wordmark } from "./Wordmark";
 
 const DIALOG_ID = "site-menu";
 
 /**
  * Full-screen mobile menu (Phase 2: a "Menu" word, not just an icon;
- * large links; the WhatsApp action at the bottom, within thumb reach).
+ * large links; the Instagram enquiry action at the bottom, within thumb
+ * reach).
  *
  * Built on the native <dialog> element opened with showModal(), which
  * gives us for free: focus moves into the menu, the rest of the page is
@@ -25,7 +27,7 @@ export function MobileMenu() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  const instagram = instagramHref(site.instagramHandle);
+  const instagram = instagramProfileHref(site.instagramHandle);
 
   const openMenu = () => {
     dialogRef.current?.showModal();
@@ -119,10 +121,10 @@ export function MobileMenu() {
             className="menu-item mt-10 flex flex-col gap-6 border-t border-rule pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
             style={{ "--i": mainNav.length } as CSSProperties}
           >
-            <Link href={enquireHref} onClick={closeMenu} className="btn-primary w-full">
-              <WhatsAppIcon />
-              Enquire on WhatsApp
-            </Link>
+            <EnquireLink onClick={closeMenu} className="btn-primary w-full">
+              <InstagramIcon />
+              Enquire on Instagram
+            </EnquireLink>
             <p className="text-caption text-muted">
               {instagram ? (
                 <a href={instagram} className="link-text" rel="noopener noreferrer" target="_blank">

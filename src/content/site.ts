@@ -41,9 +41,11 @@ export const contact = {
   email: "nethragollapudi2455@gmail.com",
   /** Phone in international format. */
   phone: null as string | null,
-  /** WhatsApp in international format, digits only (e.g. "91…"). */
-  whatsappNumber: null as string | null,
-  /** Instagram handle without the @ (unconfirmed, so not linked). */
+  /**
+   * Instagram handle without the @. The enquiry path (owner decision
+   * 2026-11-17): once set, every "Enquire on Instagram" button opens a
+   * direct message to this account. Unconfirmed, so null: never guess it.
+   */
   instagramHandle: null as string | null,
 } as const;
 
@@ -51,7 +53,7 @@ export const contact = {
 export const seo = {
   title: `${brand.name} · Bridal makeup in ${brand.city}`,
   titleTemplate: `%s · ${brand.name}`,
-  description: `${brand.name}: bridal makeup by ${brand.artistName} in ${brand.city}. Enquire on WhatsApp.`,
+  description: `${brand.name}: bridal makeup by ${brand.artistName} in ${brand.city}. Enquire on Instagram.`,
   siteName: brand.name,
   locale: "en_IN",
   /** Social sharing image (src/app/opengraph-image.png). */
@@ -71,7 +73,6 @@ export const site = {
   serviceArea: "[TBD: Service area and travel areas]",
   email: contact.email,
   phone: contact.phone,
-  whatsappNumber: contact.whatsappNumber,
   instagramHandle: contact.instagramHandle,
   copyrightHolder: brand.name,
   copyrightYear: 2026,
@@ -84,5 +85,5 @@ export const mainNav: NavItem[] = [
   { label: "About", href: "/about" },
 ];
 
-/** The primary enquiry action leads to the WhatsApp composer page. */
+/** The Enquire page (header button; fallback for enquiry actions until the Instagram handle is set). */
 export const enquireHref = "/enquire";

@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef } from "react";
 import { EASE, gsap, MQ, roomForDescenders, SplitText } from "@/lib/motion/gsap";
-import { INTRO_REVEAL_EVENT } from "./WelcomeIntro";
+import { afterIntro } from "@/lib/motion/intro";
 
 /**
  * The hero's entrance, as one timeline:
@@ -60,16 +60,10 @@ export function HeroMotion() {
 
       // Hold everything in its first frame until the welcome curtain lifts.
       tl.progress(0);
-      const root = document.documentElement;
-      const play = () => tl.play();
-      if (root.dataset.intro === "playing") {
-        window.addEventListener(INTRO_REVEAL_EVENT, play, { once: true });
-      } else {
-        play();
-      }
+      const cancel = afterIntro(() => tl.play());
 
       return () => {
-        window.removeEventListener(INTRO_REVEAL_EVENT, play);
+        cancel();
         split.revert();
       };
     });

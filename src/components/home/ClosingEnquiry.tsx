@@ -1,22 +1,22 @@
-import Link from "next/link";
-import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
+import { EnquireLink } from "@/components/ui/EnquireLink";
 import { Ornament } from "@/components/ui/Ornament";
 import { Photo, type PhotoBrief } from "@/components/ui/Photo";
 import { closing } from "@/content/home";
-import { enquireHref, site } from "@/content/site";
-import { whatsappHref } from "@/lib/whatsapp";
+import { site } from "@/content/site";
+import { instagramProfileHref } from "@/lib/instagram";
 import { BackdropArch } from "@/components/graphics/motifs";
 
 export const CLOSING_ID = "closing-enquiry";
 
 /**
  * Section 07 — "How do I check my date?" (Phase 2: a calm, full-width
- * band with one sentence and the WhatsApp action). The main action opens
- * the enquiry composer; a direct WhatsApp link appears only once the
- * client's real number is set in content/site.ts.
+ * band with one sentence and the enquiry action). The action opens a
+ * direct message to her on Instagram (owner decision 2026-11-17), or the
+ * Enquire page until the handle is set in content/site.ts.
  */
 export function ClosingEnquiry({ photo = closing.photo }: { photo?: PhotoBrief } = {}) {
-  const direct = whatsappHref(site.whatsappNumber);
+  const profile = instagramProfileHref(site.instagramHandle);
 
   return (
     <section id={CLOSING_ID} aria-labelledby="closing-title" className="relative overflow-hidden bg-surface">
@@ -30,24 +30,24 @@ export function ClosingEnquiry({ photo = closing.photo }: { photo?: PhotoBrief }
             </h2>
             <Ornament className="mt-10" />
             <p className="text-lead mt-8 max-w-(--container-prose) text-muted" data-reveal="rise">
-              Share your date and venue on WhatsApp.{" "}
+              Send your date and venue in a message on Instagram.{" "}
               <span className="placeholder-text">{closing.replyTime}</span>
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-8" data-reveal="rise">
-              <Link href={enquireHref} className="btn-primary w-full sm:w-auto">
-                <WhatsAppIcon />
-                Enquire on WhatsApp
-              </Link>
+              <EnquireLink className="btn-primary w-full sm:w-auto">
+                <InstagramIcon />
+                Enquire on Instagram
+              </EnquireLink>
               <p className="text-caption text-muted">
-                {direct ? (
+                {profile ? (
                   <>
                     Or{" "}
-                    <a href={direct} className="link-text" rel="noopener noreferrer" target="_blank">
-                      message directly
+                    <a href={profile} className="link-text" rel="noopener noreferrer" target="_blank">
+                      see her Instagram
                     </a>
                   </>
                 ) : (
-                  <span className="placeholder-text">Direct link: [TBD: WhatsApp number]</span>
+                  <span className="placeholder-text">[TBD: Instagram handle]</span>
                 )}
               </p>
             </div>

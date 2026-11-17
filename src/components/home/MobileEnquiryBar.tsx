@@ -1,16 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { enquireHref } from "@/content/site";
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
+import { EnquireLink } from "@/components/ui/EnquireLink";
 
 /**
- * Phase 2 mobile enquiry bar: one action, "Enquire on WhatsApp".
+ * Phase 2 mobile enquiry bar: one action, "Enquire on Instagram"
+ * (Instagram replaced WhatsApp, owner decision 2026-11-17).
  * - Phones only (hidden from 768 px in CSS).
  * - Slides up once the opening section has scrolled away.
  * - Slides away while the closing enquiry or the footer is on screen, so
- *   there is never a second WhatsApp button competing, and it never
+ *   there is never a second enquiry button competing, and it never
  *   covers the footer links.
  * - Fixed and transform-only: no layout shift. Respects the safe area.
  * - Hidden from keyboards and screen readers while off screen (inert).
@@ -61,10 +61,10 @@ export function MobileEnquiryBar({
 
   return (
     <div className="enquiry-bar" data-visible={visible} inert={!visible}>
-      <Link href={enquireHref} className="btn-primary w-full">
-        <WhatsAppIcon />
-        Enquire on WhatsApp
-      </Link>
+      <EnquireLink className="btn-primary w-full">
+        <InstagramIcon />
+        Enquire on Instagram
+      </EnquireLink>
     </div>
   );
 }

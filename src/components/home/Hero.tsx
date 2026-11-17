@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { BackdropArch, LotusDivider } from "@/components/graphics/motifs";
-import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
+import { EnquireLink } from "@/components/ui/EnquireLink";
 import { Photo } from "@/components/ui/Photo";
 import { hero } from "@/content/home";
-import { brand, enquireHref } from "@/content/site";
+import { brand } from "@/content/site";
 import { HeroMotion } from "./HeroMotion";
 
 /**
@@ -74,10 +75,10 @@ export function Hero() {
             data-hero-meta
             data-prehide
           >
-            <Link href={enquireHref} className="btn-primary">
-              <WhatsAppIcon />
-              Enquire on WhatsApp
-            </Link>
+            <EnquireLink className="btn-primary">
+              <InstagramIcon />
+              Enquire on Instagram
+            </EnquireLink>
             <Link href="/portfolio" className="link-text text-label inline-flex min-h-11 items-center self-start min-[400px]:self-auto">
               See the portfolio
             </Link>
